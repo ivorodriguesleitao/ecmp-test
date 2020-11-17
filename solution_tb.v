@@ -7,6 +7,7 @@ module circuit_tb;
 
    `CLOCK(clk, 10)
    `RESET(rst, 1, 10)
+   `SIGNAL(x, 32)
    `SIGNAL(en, 1)
    `SIGNAL_OUT(y, `W)
 
@@ -17,7 +18,8 @@ module circuit_tb;
       $dumpvars();
       en=0;
       for (i=0; i<100; i=i+1) begin
-         @(posedge clk) #1 en=1; $display("%d: %d",i+1, y);
+         @(posedge clk) #1 x=$random; 
+         @(posedge clk) #1 x=x > -1? x:-x; $display("%d: %d %d", i+1, x, y);  
       end
 
       @(posedge clk) #100 $finish;
@@ -33,6 +35,7 @@ module circuit_tb;
       .rst(rst),
       .clk(clk),
       .en(en),
+      .x(x),
       .y(y)
       );
 
